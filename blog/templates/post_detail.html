@@ -2,9 +2,9 @@
 
 {% block title %} {{ block.super }} {% endblock title %}
 {% block content %}
-	<h2>{{ title }}</h2>
-	{{ instance.id }}</br>
+<div class="col-sm-5 col-sm-offset-4">
+	<h2>{{ title }} <small> {{ instance.timestamp}}</br> </small></h2>
 	{{ instance.content }}</br>
-	{{ instance.update }}</br>
-	{{ instance.timestamp}}</br>
+</div>
+
 {% endblock content %}
