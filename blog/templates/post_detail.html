@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Index</title>
+</head>
+<body>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+	<h2>{{ title }}</h2>
+	{{ instance.id }}</br>
+	{{ instance.content }}</br>
+	{{ instance.update }}</br>
+	{{ instance.timestamp}}</br>
+</body>
+</html>

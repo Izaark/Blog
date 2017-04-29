@@ -5,12 +5,13 @@
 	<title>Index</title>
 </head>
 <body>
-	<h3>Probando... {{ instance.title}} </h4>
+	<h3>Probando... {{ instance.title}} {{ instance.content}} </h4>
 	{% for obj in queryset %}
 	{# <a href= '{% url 'posts:detail' id=obj.id %}'>{{ obj.title }}</a> #}
 	{% url "posts:detail" id=obj.id %}
 	<a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
-
+	<h2>{{ obj.id }}</h2>
+	<h4>{{ obj.title }}</h4>
 	<h3>{{ obj.content}}</h3>
 	<h3>{{ obj.update}}</h3>
 	{% endfor %}
