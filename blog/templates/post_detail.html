@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load urlify %}
 
 {% block title %} {{ block.super }} {% endblock title %}
 {% block content %}
@@ -8,7 +9,10 @@
      {% endif %}
 	<h2>{{ title }} <small> {{ instance.timestamp}}</br> </small></h2>
 	{{ instance.content }}</br>
-	
+	{{ share_string}}<br>
+	{{ instance.title|urlify}}
+
+
 		<a href="https://www.facebook.com/sharer/sharer.php?{{ request.build_absolute_uri }}">
 		<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
 
@@ -21,7 +25,6 @@
 		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
 		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
 		</a>
-
 </div>
 
 {% endblock content %}

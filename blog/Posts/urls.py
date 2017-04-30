@@ -5,9 +5,9 @@ app_name = 'posts'
 
 urlpatterns = [
     url(r'^create/$', post_create, name='crate'),
-    url(r'^(?P<id>\d+)/$', post_detail, name='detail'),	#sólo digitos increment
+    url(r'^(?P<slug>[\w-]+)/$', post_detail, name='detail'),	#sólo digitos increment
     url(r'^$', post_list, name='list'),
-   	url(r'^(?P<id>\d+)/edit/$', post_update, name='update'),
-   	url(r'^(?P<id>\d+)/delete/$', post_delete, name='delete'),
+   	url(r'^(?P<slug>[\w-]+)/edit/$', post_update, name='update'),
+   	url(r'^(?P<slug>[\w-]+)/delete/$', post_delete, name='delete'),
 
 ]

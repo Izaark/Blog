@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse_lazy
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
 
 def upload_location(instance, filename):
 	return '%s/%s' %(instance.id, filename)
@@ -7,6 +9,7 @@ def upload_location(instance, filename):
 class Post(models.Model):
 
 	title = models.CharField(max_length=50)
+	slug = models.SlugField(unique=True)
 	image = models.ImageField(upload_to=upload_location, null=True, blank=True,
 		height_field='height_field',
 		width_field='width_field')
@@ -26,4 +29,23 @@ class Post(models.Model):
 		return self.title
 
 	def get_absolute_url(self):
-		return reverse_lazy('posts:detail', kwargs={'id':self.id})
+		return reverse_lazy('posts:detail', kwargs={'slug':self.slug})
+
+#crea slug para identificar con esto en lugar de id
+def create_slug(instance, new_slug=None):
+	slug = slugify(instance.title)
+	if new_slug is not None:	#si no tiene crea un nuevo slug
+		slug = new_slug
+	qs = Post.objects.filter(slug=slug).order_by('-id')		#la consulta los filtra por slug
+	exists = qs.exists()
+	if exists:					#si existe le agrega +1, esto sólo  si es el mismo titulo
+		new_slug = "%s-%s" %(slug, qs.first().id)
+		return create_slug(instance, new_slug=new_slug)
+	return slug
+
+#guarda el slug que recive con la señal
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+	if not instance.slug:
+		instance.slug = create_slug(instance)
+
+pre_save.connect(pre_save_post_receiver, sender=Post)	#Remitente

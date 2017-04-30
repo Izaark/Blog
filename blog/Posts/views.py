@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse,HttpResponseRedirect, Http404
 from .models import Post
 from .forms import PostForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib.parse import quote_plus
 
 
 def post_create(request):
+	if not request.user.is_authenticated():
+		raise Http404
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -28,10 +31,8 @@ def post_list(request):
 	try:
 	    queryset = paginator.page(page)
 	except PageNotAnInteger:
-		# If page is not an integer, deliver first page.
 		queryset = paginator.page(1)
 	except EmptyPage:
-		# If page is out of range (e.g. 9999), deliver last page of results.
 		queryset = paginator.page(paginator.num_pages)
 
 	context = {
@@ -41,16 +42,20 @@ def post_list(request):
 
 	return render(request, "post_list.html",context)
 
-def post_detail(request, id=None):
-	instance = get_object_or_404(Post, id=id)
+def post_detail(request, slug=None):
+	instance = get_object_or_404(Post, slug=slug)
+	share_string = quote_plus(instance.title)
 	context = {
 	'title': instance.title,
 	'instance' : instance,
+	'share_string' : share_string
 	}
 	return render(request,'post_detail.html',context)
 
-def post_update(request, id=None):
-	instance = get_object_or_404(Post, id=id)
+def post_update(request, slug=None):
+	if not request.user.is_authenticated():
+		raise Http404
+	instance = get_object_or_404(Post, slug=slug)
 	form = PostForm(request.POST or None, request.FILES or None, instance = instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -65,8 +70,10 @@ def post_update(request, id=None):
 	}
 	return render(request, 'post_create.html', context)
 
-def post_delete(request, id=None):
-	instance = get_object_or_404(Post, id=id)
+def post_delete(request, slug=None):
+	if not request.user.is_authenticated():
+		raise Http404
+	instance = get_object_or_404(Post, slug=slug)
 	instance.delete()
 	messages.success(request, 'Se a eliminado correctamente !')
 	return redirect('posts:list')
