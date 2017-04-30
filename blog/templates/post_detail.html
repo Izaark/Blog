@@ -8,6 +8,20 @@
      {% endif %}
 	<h2>{{ title }} <small> {{ instance.timestamp}}</br> </small></h2>
 	{{ instance.content }}</br>
+	
+		<a href="https://www.facebook.com/sharer/sharer.php?{{ request.build_absolute_uri }}">
+		<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
+
+		<a href="https://twitter.com/home?status=Crea%20tu%20blog%20dale%20click%20{{ request.build_absolute_uri }}">
+		<i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>
+
+		<a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'><i class="fa fa-google-plus-square fa-3x" aria-hidden="true"></i></a>
+
+		<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title=Mira%20mi%20blog&
+		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
+		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
+		</a>
+
 </div>
 
 {% endblock content %}
