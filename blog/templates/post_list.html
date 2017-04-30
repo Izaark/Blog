@@ -3,12 +3,14 @@
 {% block content %}
 <div class="col-sm-5 col-sm-offset-4">
 	<h2>Lista</h2>
-	{% for obj in queryset %}
+	{% for obj in object_list %}
 		{# <h1>{% url "posts:detail" id=obj.id %}</h1> #}
 <div class="row">
 	<div class="col-sm-12">
     	<div class="thumbnail">
-      		<img src="..." alt="...">
+      {% if obj.image %}
+         <img src="{{ obj.image.url }}" class="img-responsive">
+      {% endif %}
 		      <div class="caption">
 		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
 		        <small>hace: {{ obj.timestamp|timesince }}</small></h3>
@@ -20,5 +22,22 @@
   <hr/>
 </div>
 	{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
 </div>
 {% endblock content %}

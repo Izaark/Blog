@@ -3,6 +3,9 @@
 {% block title %} {{ block.super }} {% endblock title %}
 {% block content %}
 <div class="col-sm-5 col-sm-offset-4">
+	{% if instance.image %}
+		<img src="{{ instance.image.url }}" class="img-responsive">
+     {% endif %}
 	<h2>{{ title }} <small> {{ instance.timestamp}}</br> </small></h2>
 	{{ instance.content }}</br>
 </div>

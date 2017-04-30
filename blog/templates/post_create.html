@@ -3,7 +3,7 @@
 {% block title %} Crear {% endblock title %}
     {% block content %}
         <h2>Post Form</h2>
-	    <form method="post" action="">
+	    <form method="post" action="" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" value="Crear post" class="btn btn-success">
