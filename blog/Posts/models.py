@@ -31,6 +31,11 @@ class Post(models.Model):
 	def get_absolute_url(self):
 		return reverse_lazy('posts:detail', kwargs={'slug':self.slug})
 
+	def get_absolute_url_delete(self):
+		return reverse_lazy('posts:delete', kwargs={'slug':self.slug})
+
+	def get_absolute_url_update(self):
+		return reverse_lazy('posts:update', kwargs={'slug':self.slug})
 #crea slug para identificar con esto en lugar de id
 def create_slug(instance, new_slug=None):
 	slug = slugify(instance.title)

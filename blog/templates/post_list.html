@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <div class="col-sm-5 col-sm-offset-4">
-	<h2>Lista</h2>
+	<h3>Lista</h3>
 	{% for obj in object_list %}
 		{# <h1>{% url "posts:detail" id=obj.id %}</h1> #}
 <div class="row">
@@ -15,13 +16,20 @@
 		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
 		        <small>hace: {{ obj.timestamp|timesince }}</small></h3>
 		        <p>{{ obj.content|truncatechars:125}}</p>
-		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a></p>
+		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
+            <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
+            {# <a href="{{ obj.get_absolute_url_delete }}" class="btn btn-danger" role="button">Eliminar</a> #}
+            </p>
 		      </div>
   		</div>
   </div>
   <hr/>
 </div>
 	{% endfor %}
+
+<div class="floating  col-sm-offset-10 ">
+  <a href="{% url 'posts:create' %}" class="btn btn-info btn-fab"><i class="material-icons">add</i></a>
+</div>
 
 <div class="pagination">
     <span class="step-links">
@@ -37,5 +45,4 @@
     </span>
 </div>
 
-</div>
 {% endblock content %}

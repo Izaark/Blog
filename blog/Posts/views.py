@@ -68,7 +68,7 @@ def post_update(request, slug=None):
 	'instance': instance,
 	'form': form
 	}
-	return render(request, 'post_create.html', context)
+	return render(request, 'post_update.html', context)
 
 def post_delete(request, slug=None):
 	if not request.user.is_authenticated():
