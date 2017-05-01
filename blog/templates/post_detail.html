@@ -7,12 +7,18 @@
 	{% if instance.image %}
 		<img src="{{ instance.image.url }}" class="img-responsive">
      {% endif %}
-	<h3>{{ title }} <small> {{ instance.timestamp}}</br> </small></h3>
+	<h3>{{ title }} <small>  {% if instance.draft %} <span style="color:blue">Draft</span>{% endif %} {{ instance.timestamp}}</small></h3>
+
+	{% if instance.user.get_full_name %}
+		<h4> Author: {{ instance.user.get_full_name }}</h4>
+	{% else %}
+		<h4> Author: {{ instance.user }}</h4>
+	{% endif %}
+
 	{{ instance.content }}</br>
-	{{ share_string}}<br>
-	{{ instance.title|urlify}}
-
-
+<!--	{{ share_string}}<br>
+	{{ instance.title|urlify}} -->
+		<h3>Comparte el post en: </h3>
 		<a href="https://www.facebook.com/sharer/sharer.php?{{ request.build_absolute_uri }}">
 		<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
 
@@ -25,6 +31,11 @@
 		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
 		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
 		</a>
+	
+		<hr><div class="fb-comments" data-href="{{ request.build_absolute_uri}}" data-numposts="5"></div>
+
+		<br><div class="fb-like" data-href="{{ request.build_absolute_uri}}" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="false"></div>
+		<hr><div class="fb-follow" data-href="https://www.facebook.com/izaak.the.new" data-layout="standard" data-size="large" data-show-faces="true"></div>
 
 </div>
 

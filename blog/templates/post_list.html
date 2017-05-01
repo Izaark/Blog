@@ -14,7 +14,14 @@
       {% endif %}
 		      <div class="caption">
 		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
-		        <small>hace: {{ obj.timestamp|timesince }}</small></h3>
+		        <small>{{ obj.publish}}</small></h3>
+
+              {% if obj.user.get_full_name %}
+                  <h4> Author: {{ obj.user.get_full_name }}</h4>
+              {% else %}
+                  <h4> Author: {{ obj.user }}</h4>
+              {% endif %}
+
 		        <p>{{ obj.content|truncatechars:125}}</p>
 		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
             <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
