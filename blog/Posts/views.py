@@ -5,7 +5,8 @@ from .forms import PostForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote_plus
-
+from django.utils import timezone
+from django.db.models import Q
 
 def post_create(request):
 	if not request.user.is_authenticated():
@@ -24,8 +25,17 @@ def post_create(request):
 	return render(request, 'post_create.html', context)
 
 def post_list(request):
+	today = timezone.now()
+	queryset_list = Post.objects.active()	#filter(draft=False).filter(publish__lte=timezone.now())	#.order_by('-timestamp')
+	if request.user.is_staff or request.user.is_superuser:
+		queryset_list = Post.objects.all()
+	query = request.GET.get('q')	#busqueda
+	if query:
+		queryset_list = queryset_list.filter(
+			Q(title__icontains=query)|
+			Q(content__icontains=query)|
+			Q(user__first_name__icontains=query)).distinct()
 
-	queryset_list = Post.objects.all()	#.order_by('-timestamp')
 	paginator = Paginator(queryset_list, 5)
 	page_request_var = "list"
 	page = request.GET.get(page_request_var)
@@ -35,16 +45,19 @@ def post_list(request):
 		queryset = paginator.page(1)
 	except EmptyPage:
 		queryset = paginator.page(paginator.num_pages)
-
 	context = {
 	'object_list':queryset,
-	'page_request_var':page_request_var
+	'page_request_var':page_request_var,
+	'today':today
 	}
 
 	return render(request, "post_list.html",context)
 
 def post_detail(request, slug=None):
 	instance = get_object_or_404(Post, slug=slug)
+	if instance.publish > timezone.now() or instance.draft:
+		if not request.user.is_staff or not request.user.is_superuser:
+			raise Http404
 	share_string = quote_plus(instance.title)
 	context = {
 	'title': instance.title,

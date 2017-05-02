@@ -4,6 +4,13 @@
 
 <div class="col-sm-5 col-sm-offset-4">
 	<h3>Lista</h3>
+       <form class="col-sm-6" method="GET">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Buscar Post" name="q"
+          value="{{ request.GET.q }}">
+          <input type="submit" value="buscar" class="btn btn-primary">
+        </div>
+      </form>
 	{% for obj in object_list %}
 		{# <h1>{% url "posts:detail" id=obj.id %}</h1> #}
 <div class="row">
@@ -13,6 +20,12 @@
          <img src="{{ obj.image.url }}" class="img-responsive">
       {% endif %}
 		      <div class="caption">
+          {% if obj.draft%}
+            <h3>Draft</h3> 
+          {% endif %}
+          {% if obj.publish > today %}
+            <h3>Post al futuro</h3>
+          {% endif %}
 		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
 		        <small>{{ obj.publish}}</small></h3>
 
@@ -21,7 +34,6 @@
               {% else %}
                   <h4> Author: {{ obj.user }}</h4>
               {% endif %}
-
 		        <p>{{ obj.content|truncatechars:125}}</p>
 		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
             <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
@@ -41,13 +53,13 @@
 <div class="pagination">
     <span class="step-links">
         {% if object_list.has_previous %}
-            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}">Anterior</a>
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}">Anterior</a>
         {% endif %}
         <span class="current">
             Pag. {{ object_list.number }} de {{ object_list.paginator.num_pages }}.
         </span>
         {% if object_list.has_next %}
-            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}">Siguiente</a>
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}">Siguiente</a>
         {% endif %}
     </span>
 </div>

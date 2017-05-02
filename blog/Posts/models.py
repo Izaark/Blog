@@ -3,6 +3,13 @@ from django.core.urlresolvers import reverse_lazy
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.conf import settings
+from django.utils import timezone
+	
+	#override al manager
+class PostManager(models.Manager):
+	def active(self, *args, **kwargs):
+		return super(PostManager, self).filter(draft=False).filter(publish__lte=timezone.now())
+
 
 def upload_location(instance, filename):
 	return '%s/%s' %(instance.id, filename)
@@ -23,6 +30,8 @@ class Post(models.Model):
 	publish = models.DateTimeField(auto_now_add=False, auto_now=False,null=True)
 
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+
+	objects = PostManager()
 
 
 	class Meta:
