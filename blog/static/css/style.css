@@ -1,6 +1,10 @@
 h2{
-	color: red;
+	color: blue;
 }
 h3{
 	color: green;
+}
+.wmd-panel {
+margin-left: 0px !important;
+margin-right: 0px !important;
 }

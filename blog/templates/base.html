@@ -73,7 +73,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
+
+  $(document).ready(function(){      
+   // renderiza de markdown a html para todo el contenido con jquery, "es mejor desde django en el back" 
     $('.content-markdown').each(function(){
           var content = $(this).text()
           console.log(content)
@@ -81,10 +83,45 @@
           console.log(markedContent)
           $(this).html(markedContent)
       })
-    $('.content-markdown img').each(function(){
+    // hace la imagen responsiva, la cual se llama en post_list.html
+    $('.post-detail-art img').each(function(){
       $(this).addClass('img-responsive')
     })
   })
+
+
+  var contentInput = $('#id_content');
+      //$('#preview-content').html(marked(contentInput.val()))
+
+  //para que sea responsive la imagen y el contenido y en tiempo real con keyup
+  function setContent(value){
+    var markedContent = marked(value)
+    $('#preview-content').html(markedContent)
+    $('#preview-content img').each(function(){
+      $(this).addClass('img-responsive')
+    })
+  }
+  setContent(contentInput.val())
+  contentInput.keyup(function(){
+    // console.log($(this).val())
+    var newContent = ($(this).val())
+    setContent(newContent)
+  })
+
+    // preview del titulo y titile en tiempo real con keyup
+  var titleInput = $('#id_title');
+  function setTitle(value){
+    var markedTitle = marked(value)
+    $('#preview-title').html(markedTitle)
+  }
+
+  setTitle(titleInput.val())
+
+  titleInput.keyup(function(){
+    var newTitle = ($(this).val())
+    setTitle(newTitle)
+  })
+
 </script>
 </body>
 

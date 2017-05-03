@@ -9,7 +9,7 @@
         <h3 class="col-sm-offset-4">Lista</h3>
           <input type="text" class="form-control" placeholder="Buscar Post" name="q"
           value="{{ request.GET.q }}">
-          <input type="submit" value="buscar" class="col-sm-12 btn btn-primary">
+          <button type="submit" class="col-sm-12 btn btn-primary" >Buscar <i class="fa fa-search fa-1x" aria-hidden="true"></i></button>
         </div>
       </form>
 
@@ -21,14 +21,14 @@
       {% if obj.image %}
          <img src="{{ obj.image.url }}" class="img-responsive">
       {% endif %}
-		      <div class="caption">
-          {% if obj.draft%}
-            <h3>Draft</h3> 
-          {% endif %}
+		      <div class="caption post-detail-art">
+            {% if obj.draft%}
+              <h3>Draft</h3> 
+            {% endif %}
           {% if obj.publish > today %}
             <h3>Post al futuro</h3>
           {% endif %}
-		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a>
+		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a><hr>
 		        <small>{{ obj.publish}}</small></h3>
 
               {% if obj.user.get_full_name %}
@@ -36,7 +36,9 @@
               {% else %}
                   <h4> Author: {{ obj.user }}</h4>
               {% endif %}
-		        <p class="content-markdown">{{ obj.content|truncatechars:200}}</p>
+
+		        <p class="">{{ obj.get_markdown|truncatewords_html:30 }}</p>
+
 		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
             <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
             {# <a href="{{ obj.get_absolute_url_delete }}" class="btn btn-danger" role="button">Eliminar</a> #}

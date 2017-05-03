@@ -4,7 +4,8 @@ from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from django.conf import settings
 from django.utils import timezone
-	
+from markdown_deux import markdown
+from django.utils.safestring import mark_safe
 	#override al manager
 class PostManager(models.Manager):
 	def active(self, *args, **kwargs):
@@ -50,6 +51,12 @@ class Post(models.Model):
 
 	def get_absolute_url_update(self):
 		return reverse_lazy('posts:update', kwargs={'slug':self.slug})
+
+	def get_markdown(self):
+		content = self.content
+		markdown_text = markdown(content)
+		return mark_safe(markdown_text)
+
 #crea slug para identificar con esto en lugar de id
 def create_slug(instance, new_slug=None):
 	slug = slugify(instance.title)

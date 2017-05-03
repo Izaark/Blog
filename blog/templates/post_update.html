@@ -1,13 +1,24 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
  {% block head_extra %}
    {{ form.media }}
-  {% endblock head_extra %}
+{% endblock head_extra %}
 {% block title %} Actualizar {% endblock title %}
-    {% block content %}
-        <h2>Actualizar Post</h2>
-	    <form method="post" action="" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<input type="submit" value="Actualizar post" class="btn btn-success">
-		</form>	
-    {% endblock content %}
+
+{% block content %}
+    <div class="col-sm-6">
+        <h2>Actualizar Post</h2><hr>
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Actualizar post" class="btn btn-success">
+        </form> 
+    </div>
+    <div class="col-sm-6">
+    	<h2>Preview</h2>
+    	<div class="content-preview">
+    		<h4 id="preview-title"></h4><hr>
+    		<p id="preview-content"></p><hr>
+    	</div>
+    </div>
+{% endblock content %}
