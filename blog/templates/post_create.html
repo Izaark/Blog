@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+  {% block head_extra %}
+   {{ form.media }}
+  {% endblock head_extra %}
 {% block title %} Crear {% endblock title %}
     {% block content %}
         <h2>Post Form</h2>
@@ -8,4 +10,4 @@
 			{{ form.as_p }}
 			<input type="submit" value="Crear post" class="btn btn-success">
 		</form>	
-    {% endblock content %}
+	{% endblock content %}

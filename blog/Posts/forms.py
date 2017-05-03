@@ -1,13 +1,23 @@
 from django import forms
 from .models import Post
+from pagedown.widgets import PagedownWidget
 
 class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = [
-        	'title',
-        	'content',
-        	'image',
-        	'draft',
-        	'publish']
-    
+	content = forms.CharField(widget=PagedownWidget)
+	class Meta:
+		model = Post
+		fields = [
+			'title',
+			'content',
+			'image',
+			'draft',
+			'publish']
+		labels = {
+			'title':'Titulo',
+			'image':'Imagen',
+			'draft':'Borrador',
+			'publish':'Publicar',
+		}
+		widgets = {
+		'publish':forms.SelectDateWidget(),
+		}

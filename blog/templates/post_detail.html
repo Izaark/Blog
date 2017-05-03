@@ -14,8 +14,8 @@
 	{% else %}
 		<h4> Author: {{ instance.user }}</h4>
 	{% endif %}
-
-	{{ instance.content }}</br>
+	<div class="content-markdown"> {{ instance.content}} </div>
+		{# |safe html #}
 <!--	{{ share_string}}<br>
 	{{ instance.title|urlify}} -->
 		<h3>Comparte el post en: </h3>

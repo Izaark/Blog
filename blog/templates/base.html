@@ -11,8 +11,8 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material-fullpalette.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material-fullpalette.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/ripples.min.css">
 
 	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
 
@@ -32,11 +32,6 @@
       <ul class="nav navbar-nav">
         <li><a href="#">Usuario</a></li>
       </ul>
-        <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control col-md-8" placeholder="Buscar Post">
-        </div>
-      </form>
       <ul class="nav navbar-nav navbar-right">
       <li><a href="#">API</a></li>
         <p class="navbar-text">Developer: <a href="https://github.com/Izaark" class="navbar-link">Isaac</a></p>
@@ -44,6 +39,11 @@
     </div>
   </div>
 </div>
+
+  {% block head_extra %}
+  
+  {% endblock head_extra %}
+
 <body>
 
 <div id="fb-root"></div>
@@ -62,7 +62,29 @@
 	{% endblock content %}
 </div>
 
+<script
+  src="https://code.jquery.com/jquery-1.12.4.js"
+  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous">
+</script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.content-markdown').each(function(){
+          var content = $(this).text()
+          console.log(content)
+          var markedContent = marked(content)
+          console.log(markedContent)
+          $(this).html(markedContent)
+      })
+    $('.content-markdown img').each(function(){
+      $(this).addClass('img-responsive')
+    })
+  })
 </script>
 </body>
 

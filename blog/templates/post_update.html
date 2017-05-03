@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-
+ {% block head_extra %}
+   {{ form.media }}
+  {% endblock head_extra %}
 {% block title %} Actualizar {% endblock title %}
     {% block content %}
-        <h2>Actualizar Form</h2>
+        <h2>Actualizar Post</h2>
 	    <form method="post" action="" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ form.as_p }}
