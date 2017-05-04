@@ -7,6 +7,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote_plus
 from django.utils import timezone
 from django.db.models import Q
+from comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
 
 def post_create(request):
 	if not request.user.is_authenticated():
@@ -59,10 +61,14 @@ def post_detail(request, slug=None):
 		if not request.user.is_staff or not request.user.is_superuser:
 			raise Http404
 	share_string = quote_plus(instance.title)
+	content_type = ContentType.objects.get_for_model(Post)
+	object_id = instance.id
+	comments = Comment.objects.filter(content_type=content_type, object_id=object_id)
 	context = {
 	'title': instance.title,
 	'instance' : instance,
-	'share_string' : share_string
+	'share_string' : share_string,
+	'comments' : comments
 	}
 	return render(request,'post_detail.html',context)
 

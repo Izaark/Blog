@@ -32,8 +32,17 @@
 		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
 		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
 		</a>
+		<div>
+			<p class="lead">Comentarios</p>
+			{% for comment in comments %}
+				<div class="">
+					{{comment.content}} <br>
+				 	<small>Por: {{ comment.user}} | Hace {{ comment.timestamp|timesince}}</small>	 
+				</div>
+			{% endfor %}
+		</div>
 	
-		<hr><div class="fb-comments" data-href="{{ request.build_absolute_uri}}" data-numposts="5"></div>
+		<!--<hr><div class="fb-comments" data-href="{{ request.build_absolute_uri}}" data-numposts="5"></div> -->
 
 		<br><div class="fb-like" data-href="{{ request.build_absolute_uri}}" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="false"></div>
 		<hr><div class="fb-follow" data-href="https://www.facebook.com/izaak.the.new" data-layout="standard" data-size="large" data-show-faces="true"></div>
