@@ -49,11 +49,12 @@
   <hr/>
 </div>
 	{% endfor %}
-{# Paginación #}
+
 <div class="floating  col-sm-offset-10 ">
   <a href="{% url 'posts:create' %}" class="btn btn-info btn-fab"><i class="material-icons">add</i></a>
 </div>
 
+{# Paginación #}
 <div class="pagination">
     <span class="step-links">
         {% if object_list.has_previous %}

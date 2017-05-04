@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load urlify %}
+{% load crispy_forms_tags %}
 
 {% block title %} {{ block.super }} {% endblock title %}
 {% block content %}
@@ -15,6 +16,8 @@
 		<h4> Author: {{ instance.user }}</h4>
 	{% endif %}
 	<div class="post-detail-art"> {{ instance.get_markdown}} </div>
+	{{ instance.comments.all}}
+
 	
 		{# |safe html #}
 <!--	{{ share_string}}<br>
@@ -32,15 +35,21 @@
 		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
 		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
 		</a>
-		<div>
-			<p class="lead">Comentarios</p>
-			{% for comment in comments %}
-				<div class="">
-					{{comment.content}} <br>
-				 	<small>Por: {{ comment.user}} | Hace {{ comment.timestamp|timesince}}</small>	 
-				</div>
-			{% endfor %}
-		</div>
+
+<div>
+	<p class="lead">Comentarios</p>
+	<form method="POST" action=".">{% csrf_token %}
+		{{ comment_form|crispy }}
+		<input type="submit" value="Comentar" class="bnt btn-info" >
+	</form>
+	</br>
+	{% for comment in comments %}
+		<blockquote>
+			<p>{{comment.content}}</p>
+			<footer>Por: {{ comment.user}} | Hace {{ comment.timestamp|timesince}}</footer>
+		</blockquote>
+	{% endfor %}
+</div>
 	
 		<!--<hr><div class="fb-comments" data-href="{{ request.build_absolute_uri}}" data-numposts="5"></div> -->
 

@@ -17,27 +17,26 @@
 	<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
 
 </head>
-
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+  <span class="sr-only">45% Complete</span>
+  </div>
+</div>
 <div class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a class="navbar-brand" href="{% url 'posts:list' %}">Blojengo</a>
     </div>
-    <div class="navbar-collapse collapse navbar-inverse-collapse">
       <ul class="nav navbar-nav">
+        <li><a href="{% url 'posts:list' %}">Posts</a></li>
         <li><a href="#">Usuario</a></li>
+
       </ul>
       <ul class="nav navbar-nav navbar-right">
       <li><a href="#">API</a></li>
         <p class="navbar-text">Developer: <a href="https://github.com/Izaark" class="navbar-link">Isaac</a></p>
       </ul>
     </div>
-  </div>
 </div>
 
   {% block head_extra %}
@@ -125,5 +124,7 @@
 </script>
 </body>
 
-{% block footer %} {% endblock %} 
+{% block footer %} 
+
+{% endblock %} 
 </html>

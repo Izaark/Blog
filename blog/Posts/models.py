@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
@@ -6,6 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 from markdown_deux import markdown
 from django.utils.safestring import mark_safe
+from comments.models import Comment
 	#override al manager
 class PostManager(models.Manager):
 	def active(self, *args, **kwargs):
@@ -16,7 +18,7 @@ def upload_location(instance, filename):
 	return '%s/%s' %(instance.id, filename)
 	
 class Post(models.Model):
-
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 	title = models.CharField(max_length=50)
 	slug = models.SlugField(unique=True)
 	image = models.ImageField(upload_to=upload_location, null=True, blank=True,
@@ -30,14 +32,11 @@ class Post(models.Model):
 	draft = models.BooleanField(default=False)
 	publish = models.DateTimeField(auto_now_add=False, auto_now=False,null=True)
 
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
 	objects = PostManager()
 
 
 	class Meta:
-		verbose_name = "Post"
-		verbose_name_plural = "Posts"
 		ordering = ['-timestamp', '-update']
 
 	def __str__(self):
@@ -56,6 +55,17 @@ class Post(models.Model):
 		content = self.content
 		markdown_text = markdown(content)
 		return mark_safe(markdown_text)
+
+	@property
+	def comments(self):
+		instance = self
+		qs = Comment.objects.filter_by_instance(instance)
+		return qs
+	@property
+	def get_content_type(self):
+		instance = self
+		content_type = ContentType.objects.get_for_model(instance.__class__)
+		return content_type
 
 #crea slug para identificar con esto en lugar de id
 def create_slug(instance, new_slug=None):

@@ -8,3 +8,12 @@ h3{
 margin-left: 0px !important;
 margin-right: 0px !important;
 }
+.progress {
+    height: 6px;
+    background: #c8c8c8;
+    margin-bottom: 0px;
+}
+
+.form-control {
+    background-color: #FAFAFA;
+}
