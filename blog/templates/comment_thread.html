@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load urlify %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ block.super }} {% endblock title %}
+{% block content %}
+<div class="col-sm-5 col-sm-offset-4">
+	<p>{{comment.content}}</p>
+	<footer>Por: {{ comment.user}} | Hace {{ comment.timestamp|timesince}} | {% if comment.children.count > 0 %}{{ comment.children.count }} Comentario{% if comment.children.count > 1 %}s {% endif %} | {% endif %}</footer>
+	<div>
+		{% for child_comment in comment.children %}
+			<blockquote>
+				<p>{{child_comment.content}}</p>
+				<footer>Por: {{ child_comment.user}} | Hace {{ child_comment.timestamp|timesince}}</footer>
+			</blockquote>
+		{% endfor %}
+		<form method="POST" action=".">{% csrf_token %}
+			{{ form|crispy }}
+			<input type="hidden" name="parent_id" value="{{comment.id}}">
+			<input type="submit" value="Responder" class="bnt btn-success" >
+		</form>
+	</div>
+
+</div>
+	
+{% endblock content %}

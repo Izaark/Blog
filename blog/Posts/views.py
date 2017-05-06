@@ -11,9 +11,6 @@ from django.db.models import Q
 from comments.models import Comment
 from comments.forms import CommentForm
 
-
-
-
 def post_create(request):
 	if not request.user.is_authenticated():
 		raise Http404
@@ -77,15 +74,29 @@ def post_detail(request, slug=None):
 		content_type = ContentType.objects.get(model=c_type)
 		obj_id = form.cleaned_data.get("object_id")
 		content_data = form.cleaned_data.get("content")
+		parent_obj = None
+
+		#si existe un comentario padre se le asignara un id
+		try:
+			parent_id = int(request.POST.get('parent_id'))
+		except:
+			parent_id = None
+		# si existe ve si esta en db y da el id unico
+		if parent_id:
+			parent_qs = Comment.objects.filter(id=parent_id)
+			if parent_qs.exists() and parent_qs.count() == 1:
+				parent_obj = parent_qs.first()	#primer objeto en qs
 
 		new_comment, created = Comment.objects.get_or_create(
-								user=request.user,
-								content_type=content_type,
-								object_id=obj_id,
-								content=content_data,
+			user=request.user,
+			content_type=content_type,
+			object_id=obj_id,
+			content=content_data,
+			parent= parent_obj,
 								)
+		return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
 		if created:
-			print("yuju!!! funciona!!!")
+			print("OK !")
 
 	#Post.objects.get(id=instance.id)
 	comments = instance.comments #Comment.objects.filter_by_instance(instance)

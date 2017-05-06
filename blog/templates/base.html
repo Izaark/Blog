@@ -86,7 +86,6 @@
     $('.post-detail-art img').each(function(){
       $(this).addClass('img-responsive')
     })
-  })
 
 
   var contentInput = $('#id_content');
@@ -94,11 +93,13 @@
 
   //para que sea responsive la imagen y el contenido y en tiempo real con keyup
   function setContent(value){
-    var markedContent = marked(value)
-    $('#preview-content').html(markedContent)
-    $('#preview-content img').each(function(){
-      $(this).addClass('img-responsive')
-    })
+    if (value){
+      var markedContent = marked(value)
+      $('#preview-content').html(markedContent)
+      $('#preview-content img').each(function(){
+        $(this).addClass('img-responsive')
+      })
+    }
   }
   setContent(contentInput.val())
   contentInput.keyup(function(){
@@ -110,21 +111,20 @@
     // preview del titulo y titile en tiempo real con keyup
   var titleInput = $('#id_title');
   function setTitle(value){
-    var markedTitle = marked(value)
-    $('#preview-title').html(markedTitle)
+    $('#preview-title').text(value)
   }
-
   setTitle(titleInput.val())
-
   titleInput.keyup(function(){
-    var newTitle = ($(this).val())
-    setTitle(newTitle)
+    var newContent = ($(this).val())
+    setTitle(newContent)
   })
-
+  
+  //   // Toggle para el div de respuesta
+  $(".comment-reply-res").click(function(event){
+  event.preventDefault();
+  $(this).parent().next(".comment-reply").fadeToggle();
+  })
+ })
 </script>
 </body>
-
-{% block footer %} 
-
-{% endblock %} 
 </html>
