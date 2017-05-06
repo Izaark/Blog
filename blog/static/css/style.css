@@ -17,3 +17,6 @@ margin-right: 0px !important;
 .form-control {
     background-color: #FAFAFA;
 }
+.comment-reply{
+	display:none;
+}
