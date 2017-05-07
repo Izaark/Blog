@@ -8,6 +8,7 @@ from django.utils import timezone
 from markdown_deux import markdown
 from django.utils.safestring import mark_safe
 from comments.models import Comment
+from .utils import get_read_time
 	#override al manager
 class PostManager(models.Manager):
 	def active(self, *args, **kwargs):
@@ -30,7 +31,7 @@ class Post(models.Model):
 	update = models.DateTimeField(auto_now_add=False, auto_now=True)
 	draft = models.BooleanField(default=False)
 	publish = models.DateTimeField(auto_now_add=False, auto_now=False,null=True)
-
+	read_time = models.IntegerField(default=0)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
 	objects = PostManager()
@@ -83,5 +84,10 @@ def create_slug(instance, new_slug=None):
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = create_slug(instance)
+
+	if instance.content:
+		html_string = instance.get_markdown()
+		read_time_var = get_read_time(html_string)
+		instance.read_time = read_time_var
 
 pre_save.connect(pre_save_post_receiver, sender=Post)	#Remitente

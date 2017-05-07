@@ -5,6 +5,7 @@ from .forms import CommentForm
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 
+
 def comment_thread(request, id):
 	obj = get_object_or_404(Comment, id=id)
 	form = CommentForm(request.POST or None)

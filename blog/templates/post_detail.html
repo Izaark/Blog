@@ -9,12 +9,13 @@
 		<img src="{{ instance.image.url }}" class="img-responsive">
      {% endif %}
 	<h3>{{ title }} <small>  {% if instance.draft %} <span style="color:blue">Draft</span>{% endif %} {{ instance.timestamp}}</small></h3>
-
+	
 	{% if instance.user.get_full_name %}
 		<h4> Author: {{ instance.user.get_full_name }}</h4>
 	{% else %}
 		<h4> Author: {{ instance.user }}</h4>
 	{% endif %}
+		<p> Tiempo de lectura: {% if instance.read_time < 3 %} menos de 3 minutos {% else %}{{ instance.read_time}} Minutos{% endif %}</p>
 	<div class="post-detail-art"> {{ instance.get_markdown}} </div>
 	{{ instance.comments.all}}
 
