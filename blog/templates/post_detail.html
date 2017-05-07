@@ -41,7 +41,7 @@
 	<p class="lead">Comentarios</p>
 	<form method="POST" action=".">{% csrf_token %}
 		{{ comment_form|crispy }}
-		<input type="submit" value="Comentar" class="bnt btn-primary" >
+		<input type="submit" value="Comentar" class="btn btn-primary" >
 	</form>
 	</br>
 	{% for comment in comments %}

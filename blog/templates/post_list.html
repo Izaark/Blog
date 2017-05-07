@@ -39,9 +39,13 @@
 
 		        <p class="">{{ obj.get_markdown|truncatewords_html:30 }}</p>
 
-		        <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
-            <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
-            {# <a href="{{ obj.get_absolute_url_delete }}" class="btn btn-danger" role="button">Eliminar</a> #}
+		        <p class="list-btn">
+            <a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Ver</a>
+            {% if request.user == obj.user %}
+              <a href="{{ obj.get_absolute_url_update }}" class="btn btn-warning" role="button">Editar</a>
+              <a href="{{ obj.get_delete_url }}" class="btn btn-danger" role="button">Eliminar</a>
+            {% endif %}
+
             </p>
 		      </div>
   		</div>

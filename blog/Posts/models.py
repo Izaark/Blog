@@ -46,7 +46,10 @@ class Post(models.Model):
 	def get_absolute_url(self):
 		return reverse_lazy('posts:detail', kwargs={'slug':self.slug})
 
-	def get_absolute_url_delete(self):
+	def get_list_url(self):
+		return reverse_lazy('posts:list', kwargs={'slug':self.slug})
+
+	def get_delete_url(self):
 		return reverse_lazy('posts:delete', kwargs={'slug':self.slug})
 
 	def get_absolute_url_update(self):
@@ -84,7 +87,7 @@ def create_slug(instance, new_slug=None):
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug = create_slug(instance)
-
+	#se le asigna a instance el tiempo de lectura
 	if instance.content:
 		html_string = instance.get_markdown()
 		read_time_var = get_read_time(html_string)

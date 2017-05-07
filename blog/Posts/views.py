@@ -128,13 +128,32 @@ def post_update(request, slug=None):
 	}
 	return render(request, 'post_update.html', context)
 
+# def post_delete(request, slug=None):
+# 	if not request.user.is_authenticated():
+# 		raise Http404
+# 	instance = get_object_or_404(Post, slug=slug)
+# 	instance.delete()
+# 	messages.success(request, 'Se a eliminado correctamente !')
+# 	return redirect('posts:list')
+
 def post_delete(request, slug=None):
-	if not request.user.is_authenticated():
+	try:
+		instance = Post.objects.get(slug=slug)
+	except:
 		raise Http404
-	instance = get_object_or_404(Post, slug=slug)
-	instance.delete()
-	messages.success(request, 'Se a eliminado correctamente !')
-	return redirect('posts:list')
+	if instance.user != request.user:	#creación de errores html; Forbidden
+		response = HttpResponse('No tienes permiso para hacer esto')
+		response.status_code = 403
+		return response
+		#return render(request, 'comment_delete.html', context, status_code = 403)
+	if request.method == 'POST':
+		instance.delete()
+		messages.success(request, 'Se elimino correctamente!')
+		return redirect('posts:list')	#redirige al url padre de los comentarios !
+	context = {
+	'instance':instance,
+	}
+	return render(request, 'post_delete.html', context)
 
 
 
