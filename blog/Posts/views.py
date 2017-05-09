@@ -11,12 +11,14 @@ from django.db.models import Q
 from comments.models import Comment
 from comments.forms import CommentForm
 from .utils import get_read_time
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url= '/login/')
 def post_create(request):
 	if not request.user.is_authenticated():
 		raise Http404
 	form = PostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
+	if form.is_valid() and request.user.is_authenticated():
 		instance = form.save(commit=False)
 		form.cleaned_data.get("title")
 		instance.user = request.user
@@ -110,10 +112,16 @@ def post_detail(request, slug=None):
 	}
 	return render(request,'post_detail.html',context)
 
+@login_required()
 def post_update(request, slug=None):
-	if not request.user.is_authenticated():
+	try:
+		instance = Post.objects.get(slug=slug)
+	except:
 		raise Http404
-	instance = get_object_or_404(Post, slug=slug)
+	if instance.user != request.user:	#creación de errores html; Forbidden
+		response = HttpResponse('No tienes permiso para hacer esto')
+		response.status_code = 403
+		return response
 	form = PostForm(request.POST or None, request.FILES or None, instance = instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -136,6 +144,7 @@ def post_update(request, slug=None):
 # 	messages.success(request, 'Se a eliminado correctamente !')
 # 	return redirect('posts:list')
 
+@login_required(login_url= '/login/')
 def post_delete(request, slug=None):
 	try:
 		instance = Post.objects.get(slug=slug)

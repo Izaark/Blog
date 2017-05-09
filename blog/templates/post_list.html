@@ -6,14 +6,14 @@
 	
        <form class="col-sm-6 col-sm-offset-3" method="GET">
         <div class="form-group">
-        <h3 class="col-sm-offset-4">Lista</h3>
+        <h3 class="col-sm-offset-4"><strong>Lista</strong></h3>
           <input type="text" class="form-control" placeholder="Buscar Post" name="q"
           value="{{ request.GET.q }}">
-          <button type="submit" class="col-sm-12 btn btn-primary" >Buscar <i class="fa fa-search fa-1x" aria-hidden="true"></i></button>
+          <button type="submit" class="col-sm-12 btn btn-list-sc" >Buscar <i class="fa fa-search fa-1x" aria-hidden="true"></i></button>
         </div>
       </form>
 
-	{% for obj in object_list %}
+{% for obj in object_list %}
 		{# <h1>{% url "posts:detail" id=obj.id %}</h1> #}
 <div class="row">
 	<div class="col-sm-12">
@@ -23,12 +23,12 @@
       {% endif %}
 		      <div class="caption post-detail-art">
             {% if obj.draft%}
-              <h3>Draft</h3> 
+              <h3>Borrador</h3> 
             {% endif %}
           {% if obj.publish > today %}
-            <h3>Post al futuro</h3>
+            <h3>Post para el futuro</h3>
           {% endif %}
-		        <h3><a href="{{ obj.get_absolute_url }}"> {{ obj.title }}</a><hr>
+		        <h3><a href="{{ obj.get_absolute_url }}"> <strong>{{ obj.title }}</strong></a><hr>
 		        <small>{{ obj.publish}}</small></h3>
 
               {% if obj.user.get_full_name %}
@@ -56,22 +56,22 @@
 
 
 <div class="floating  col-sm-offset-10 ">
-  <a href="{% url 'posts:create' %}" class="btn btn-info btn-fab"><i class="material-icons">add</i></a>
+  <a href="{% url 'posts:create' %}" class="btn btn-list-sc btn-fab"><i class="material-icons">add</i></a>
 </div>
 
 {# Paginación #}
 <div class="pagination">
     <span class="step-links">
         {% if object_list.has_previous %}
-            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}">Anterior</a>
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}"><strong>Anterior</strong></a>
         {% endif %}
         <span class="current">
-            Pag. {{ object_list.number }} de {{ object_list.paginator.num_pages }}.
+           <strong>Pag. {{ object_list.number }} de {{ object_list.paginator.num_pages }}.</strong> 
         </span>
         {% if object_list.has_next %}
-            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}">Siguiente</a>
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if reques.GET.q %} &q={{ request.GET.q }}{% endif %}"><strong>Siguiente</strong></a>
         {% endif %}
     </span>
 </div>
-
+{#  <p class="navbar-text">Developer: <a href="https://github.com/Izaark" class="navbar-link">Isaac</a></p> #}
 {% endblock content %}

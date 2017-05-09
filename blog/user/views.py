@@ -3,6 +3,7 @@ from django.contrib.auth import (authenticate, get_user_model, login, logout)
 from .forms import UserLoginForm, UserRegisterForm
 
 def login_view(request):
+	next1 = request.GET.get('next')
 	title = 'Login'
 	form = UserLoginForm(request.POST or None)
 	if form.is_valid():
@@ -10,6 +11,8 @@ def login_view(request):
 		password = form.cleaned_data.get('password')
 		user = authenticate(username=user, password=password)
 		login(request, user)
+		if next1:
+			return redirect(next1)
 		return redirect('/')
 	return render(request, 'user/user_login.html', { 'form': form, 'title':title })
 

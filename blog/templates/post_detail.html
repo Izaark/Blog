@@ -8,7 +8,7 @@
 	{% if instance.image %}
 		<img src="{{ instance.image.url }}" class="img-responsive">
      {% endif %}
-	<h3>{{ title }} <small>  {% if instance.draft %} <span style="color:blue">Draft</span>{% endif %} {{ instance.timestamp}}</small></h3>
+	<h3><strong>{{ title }}</strong> <small>  {% if instance.draft %} <span style="color:blue">Borrador</span>{% endif %} {{ instance.timestamp}}</small></h3>
 	
 	{% if instance.user.get_full_name %}
 		<h4> Author: {{ instance.user.get_full_name }}</h4>
@@ -17,13 +17,13 @@
 	{% endif %}
 		<p> Tiempo de lectura: {% if instance.read_time < 3 %} menos de 3 minutos {% else %}{{ instance.read_time}} Minutos{% endif %}</p>
 	<div class="post-detail-art"> {{ instance.get_markdown}} </div>
-	{{ instance.comments.all}}
+	{# {{ instance.comments.all}} #}
 
 	
 		{# |safe html #}
 <!--	{{ share_string}}<br>
 	{{ instance.title|urlify}} -->
-		<h3>Comparte el post en: </h3>
+		<h3><strong>Comparte el post en:</strong> </h3>
 		<a href="https://www.facebook.com/sharer/sharer.php?{{ request.build_absolute_uri }}">
 		<i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
 
@@ -35,15 +35,19 @@
 		<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title=Mira%20mi%20blog&
 		summary=Mira%20lo%20que%20publico%20en%20mi%20blog%20de%20tecnolog%C3%ADa%2C%20dale%20click.">
 		<i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i>
-		</a>
+		</a><hr>
 
 <div>
-	<p class="lead">Comentarios</p>
-	<form method="POST" action=".">{% csrf_token %}
-		{{ comment_form|crispy }}
-		<input type="submit" value="Comentar" class="btn btn-primary" >
-	</form>
-	</br>
+	<p class="lead"><strong>Comentarios</strong></p>
+		{% if request.user.is_authenticated %}
+			<form method="POST" action=".">{% csrf_token %}
+				{{ comment_form|crispy }}
+				<input type="submit" value="Comentar" class="btn btn-primary" >
+			</form>
+		{% else %}
+			<p><strong>Inicia sesión para dejar un comentario !</strong></p>			
+		{% endif %}
+		</br>
 	{% for comment in comments %}
 		<blockquote>
 			<p>{{comment.content}}</p>
@@ -55,11 +59,15 @@
 						<footer>Por: {{ child_comment.user}} | Hace {{ child_comment.timestamp|timesince}}</footer>
 					</blockquote>
 				{% endfor %}
-				<form method="POST" action=".">{% csrf_token %}
-					{{ comment_form|crispy }}
-					<input type="hidden" name="parent_id" value="{{comment.id}}">
-					<input type="submit" value="Responder" class="bnt btn-success" >
-				</form>
+				{% if request.user.is_authenticated %}
+					<form method="POST" action=".">{% csrf_token %}
+						{{ comment_form|crispy }}
+						<input type="hidden" name="parent_id" value="{{comment.id}}">
+						<input type="submit" value="Responder" class="btn btn-primary" >
+					</form>
+				{% else %}
+					<p><strong>Inicia sesión para dejar un comentario !</strong></p>	
+				{% endif %}
 			</div>
 		</blockquote>
 	{% endfor %}

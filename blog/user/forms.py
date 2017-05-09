@@ -3,7 +3,7 @@ from django.contrib.auth import (authenticate, get_user_model, login, logout)
 
 User = get_user_model()
 class UserLoginForm(forms.Form):
-	user = forms.CharField(label='Usario o Password', max_length=30)
+	user = forms.CharField(label='Usario o email ', max_length=30)
 	password = forms.CharField(widget=forms.PasswordInput, max_length=20)
 
 	def clean(self, *args, **kwargs):
@@ -46,7 +46,7 @@ class UserRegisterForm(forms.ModelForm):
 			raise forms.ValidationError('Los Email deben coincidir')
 		email_qs = User.objects.filter(email = email)
 		if email_qs.exists():
-			raise form.ValidationError('Este email ya ha sido registrado')
+			raise forms.ValidationError('Este email ya ha sido registrado')
 		return super(UserRegisterForm, self).clean(*args, **kwargs)
 
 	# def clean_email2(self):
